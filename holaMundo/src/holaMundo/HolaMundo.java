@@ -47,9 +47,19 @@ public class HolaMundo {
 		int maxInt = Integer.MAX_VALUE;
 		int minInt = Integer.MIN_VALUE;
 		System.out.println("la suma es: " + (maxInt + minInt));
-	
+		long largo = 2000000000;
+		long largo2 = 1000000000;
+		System.out.println("la suma de dos largos correctamente es: " + (largo + largo2));
+//		letras
+		char letraA = 'a';
+		char letraB = 'b';
+		System.out.println("la suma de la letra a y b es: "+letraA + letraB);
+//		usando los valores del sistema ASCII
+		System.out.println("la suma de la letra a y b con parentesis es: "+(letraA + letraB));
+		System.out.println("la suma de la letra a y el numero 3 con parentesis es: "+(letraA + 3));
+		System.out.println("la suma de la letra a y el numero 3 con parentesis en char es: "+(char)(letraA + 3));
+		System.out.println("el numero 100 con parentesis en char es: "+(char)(100));
 	}
-	
 	
 	public static void main(String[] args) {
 		ejemplosComentarios();
