@@ -61,9 +61,153 @@ public class HolaMundo {
 		System.out.println("el numero 100 con parentesis en char es: "+(char)(100));
 	}
 	
+	
+	public static void ejemplosString(){
+		
+		String cadena1; //String cadena1 = "Enrique";
+		cadena1 = "Enrique";
+		String cadena2 = "hola" , cadena3 = "adiós";
+		String cadena4 = cadena2 + cadena3; //"holaEnrique"
+		String cadena5 = cadena2 + " " + cadena3; //"hola Enrique"
+		String prefijo = "34";
+		String telefono= "666666666";
+		int numero = 40;
+		System.out.print(prefijo + "-"+ telefono);
+		System.out.println("otra cosa");
+		System.out.printf("%s tiene %d años\n",cadena1,numero);
+		System.out.println("otra cosa");
+		
+	}
+	public static void ejemplosBoolean() {
+		//valores que solo almacenan true o false
+		boolean verdad = true;
+		boolean falso = false;
+		boolean comparacion1 = 10<20; //true;
+		System.out.println(10<20);//true;
+		System.out.println(comparacion1);//true;
+		//condiciones de comparacion <,>,<=,>=,==,!=,<>
+		
+		int num1 = 10;
+		int num2 = 20;
+		boolean c1 = 10<20; //true
+		boolean c2 = 10>20; //false
+		boolean c3 = 10<=20; //true
+		boolean c4 = 10>=20; //false
+		boolean c5 = 10==20; //false
+		boolean c6 = 10!=20; //true
+		String cadena1 = "hola";
+		String cadena2 ="adios";
+		String cadena3 = "hola";
+		String cadena4 = "Hola";
+		System.out.println(cadena1==cadena2);//esto seria incorrecto 
+		System.out.println(cadena1.equals(cadena2));//esto seria correcto
+		System.out.println(cadena1.equals(cadena3));//true
+		System.out.println(cadena1.equals(cadena4));//false
+		boolean cadenasIguales = cadena1.equals(cadena2); //false
+		num1 = 5;
+		double num3 = 5.0;
+		double num4 = 5.1;
+		System.out.println(num1==num3); //true
+		System.out.println(num1==num4); //false
+		System.out.println(11/2==num1); // true por que int trunca el resultado a entero
+		System.out.println(23/4==num1); // true
+		System.out.println(11.0/2==num1); // false aqui es double 
+		System.out.println(11%2==1); // true esta operacion es el resto de una division entera
+		System.out.println(11%2==0); // false 
+		System.out.println(23%4); // 3  el resto de la division es 3
+
+     
+		
+	}
+	
+	public static void tablasVerdad () {
+   	 int edad = 25;
+   	 int anyosCarnet = 6;
+   	 String sexo = "M";
+   	 String nombre = "Pepe";
+   	 boolean esPepeMayor = edad>18 && nombre.equals("Pepe"); //true
+   	 System.out.println(esPepeMayor);//true
+   	 //el siguiente caso es true y false o false y true
+   	 boolean tieneDescuento = (sexo.equals("M") && anyosCarnet >10 )|| (sexo.equals("F")&& anyosCarnet > 5);
+   	 System.out.println(tieneDescuento); //false
+   	 
+   	 boolean estoQueDa = sexo.equals("M") || anyosCarnet>5 && nombre.equals("fran");//true
+   	 System.out.println(estoQueDa);
+    } 
+	
+	public static void ejemploIncrementos() {
+		
+		int num = 10;
+		//pre-incrementos
+		++num; //11
+		System.out.println(num);//11
+		//post-incrementos
+		num++; //12
+		System.out.println(num);//12
+	
+		//pre-decrementos
+		--num; //11
+		System.out.println(num);//11
+		//post-decrementos
+		num--; //10
+		System.out.println(num);//10
+		//lo importante es el momento en el que incrementa o decrementa
+		
+		///////////////////////////////
+		
+		System.out.println(++num); //11
+		System.out.println(num++); //11
+		System.out.println(num); //12	
+		System.out.println(++num+num++); //26
+//		System.out.println(num+++ ++num); //26 a+b = b+a
+		System.out.println(num); //14
+		int num2 = ++num; //num2 =15 num=15
+		System.out.println(num2 +"y"+ num);
+		int num3 = num++; //num3 =15 num=16
+		System.out.println(num3 +"y"+ num);
+		
+		
+		
+		
+	}
+	
+	public static void ejemplosConstantes() {
+		//final y mayusculas para constantes
+		final double IVA = 0.21;	
+		final double PI = 3.1416;
+		double precioVaquero = 50;
+		System.out.println("el precio final es:"+ (precioVaquero * (1+IVA)));
+		//PI=3.14159; daria un error
+		
+	}
+	public static void conversionesNumerosCadenas() {
+		int num =10;
+		String cadena = "11";
+		System.out.println(cadena+num); //1110
+		System.out.println(Integer.parseInt(cadena)+num); //21 convertir cadena a numero
+		int prefijo = 34;
+		int telefono = 666666666;
+		System.out.println(prefijo+telefono); //666666670
+		System.out.println(""+prefijo+telefono); //34666666666
+		System.out.println(String.valueOf(prefijo)+telefono); //34666666666 convertir numero en cadena
+		System.out.println("00"+prefijo+"-"+telefono); //0034-666666666
+		
+		
+	}
+	
 	public static void main(String[] args) {
-		ejemplosComentarios();
-		ejemploTipos();
+//		ejemplosComentarios();
+//		ejemploTipos();
+//		ejemplosString();
+//		ejemplosBoolean();
+//		tablasVerdad ();
+//		ejemploIncrementos();
+//		ejemplosConstantes();
+		conversionesNumerosCadenas();
 	}
 
-}
+	
+	
+}	 	
+
+
