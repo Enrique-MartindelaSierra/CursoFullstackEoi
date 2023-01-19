@@ -1,13 +1,19 @@
 package ejercicios;
 
+import java.util.Scanner;
+
 public class Ejercicios {
 
 	public static void main(String[] args) {
-		ejercicio1();	
-		ejercicio2();
-	    ejercicio3();
-	    ejercicio5();
-	    ejercicio6();
+//		ejercicio1();	
+//		ejercicio2();
+//	    ejercicio3();
+//	    ejercicio5();
+//	    ejercicio6();
+//		ejercicio7(); 
+//		ejercicio8(); 
+//		ejercicio9(); 
+		ejercicio15(); 
 	}
 		private static void ejercicio1 () {
 			System.out.println(36 + 27);
@@ -88,7 +94,50 @@ public class Ejercicios {
 			
 		}
 		
+		public static void ejercicio7() {
+			
+			
+		}
 		
+		public static void ejercicio8() {
+			
+			
+		}
+		
+		public static void ejercicio9() {
+			
+			
+		} 
+		
+		public static void ejercicio15() {//añadir la solucion del github de Fran
+			 
+		Scanner sc = new Scanner(System.in);	
+		System.out.println("NOMBRE");
+		String nombre = sc.next();
+		System.out.println("PRECIO");
+		double precio = Double.parseDouble(sc.next().replace(",","."));
+		System.out.println();
+		final double IVA = 0.21;
+		
+		System.out.println("NOMBRE");
+		String nombre2 = sc.next();
+		System.out.println("PRECIO");
+		double precio2 = Double.parseDouble(sc.next().replace(",","."));
+		System.out.println();
+		
+		System.out.println("NOMBRE");
+		String nombre3 = sc.next();
+		System.out.println("PRECIO");
+		double precio3 = Double.parseDouble(sc.next().replace(",","."));
+		System.out.println();
+		
+		System.out.printf("%-15s%12s%12s\n","NOMBRE","PRECIO","CON IVA");
+		System.out.printf("%-15s%12.2f€%12.2f€\n",nombre , precio , (precio*(1+IVA)));
+		System.out.printf("%-15s%12.2f€%12.2f€\n",nombre2 , precio2 , (precio2*(1+IVA)));
+		System.out.printf("%-15s%12.2f€%12.2f€\n",nombre3 , precio3 , (precio3*(1+IVA)));
+		
+		sc.close();	
+		}
 		
 		
 		
