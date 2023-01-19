@@ -17,6 +17,7 @@ public class Ejercicios {
 	}
 		private static void ejercicio1 () {
 			System.out.println(36 + 27);
+			    
 			
 		}
 
