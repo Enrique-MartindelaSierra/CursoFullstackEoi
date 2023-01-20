@@ -8,12 +8,13 @@ public class Ejercicios {
 //		ejercicio1();	
 //		ejercicio2();
 //	    ejercicio3();
+		ejercicio4();
 //	    ejercicio5();
 //	    ejercicio6();
 //		ejercicio7(); 
 //		ejercicio8(); 
 //		ejercicio9(); 
-		ejercicio15(); 
+//		ejercicio15(); 
 	}
 		private static void ejercicio1 () {
 			System.out.println(36 + 27);
@@ -41,6 +42,19 @@ public class Ejercicios {
 			System.out.println(valor1>=valor2);
 			System.out.println(valor1 + " es menor que "+valor2+ ": "+(valor1<valor2));
 			System.out.printf("%d y %d son iguales: %b \n", valor1, valor2 ,(valor1==valor2));
+			
+		}
+		private static void ejercicio4() {
+			double v1 = 1;
+			double v2 = 2;
+			double v3 = 3;
+			double v4 = 4;
+		
+			System.out.printf("%.0f ",v1);
+			System.out.printf("%.0f ",v2);
+			System.out.printf("%.0f ",v3);
+			System.out.printf("%.0f \n",v4);
+			System.out.println((v1+v2)*v3/v4);
 			
 		}
 		

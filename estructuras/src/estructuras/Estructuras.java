@@ -10,7 +10,10 @@ public class Estructuras {
 //		ejemploIfElseIfELse();	
 //		ejemploIfElseIfsinElse();
 //		ejemploSwitch();
-		ejemploTernarias();
+//		ejemploTernarias();
+//		ejemplosAmbitosVariables();
+//		ejemploWhile1();
+		ejemploWhile2();
 		}
 
 	public static void ejemploIf() {
@@ -172,5 +175,59 @@ public class Estructuras {
 		System.out.println("cuesta " + euros + (euros!=1?" euros":" euro"));
 		
 		}
+	
+	public static void ejemplosAmbitosVariables() {	
+		int numero = 5 ;
+		int edad = 20;
+		if(edad>=18) {
+			//int numero = 3; esto en java da error pero otros lenguajes lo permiten
+			int valor = 4;
+			System.out.println(numero);
+		}
+		//System.out.println(valor); da error por que la variable no existe fuera del if
+		
+		
+	}
+	public static void ejemploWhile1() {
+		Scanner sc = new Scanner(System.in);
+		String password = "1234";
+		boolean adivina = false;
+		while(!adivina) { //la exclamación viene a ser: mientras no lo adivina entra al bucle, hace lo mismo que adivina == false. la exclamacion es un no, no adivina es true, por tanto, cuando sea true, no adivina sera false y no entrará
+			System.out.println("Introduzca la contraseña: ");
+			String respuesta = sc.nextLine();
+			if(respuesta.equals(password)) {
+				adivina = true;
+			}
+		}
+		sc.close();
+	}
+		
+	public static void ejemploWhile2() { //el programa permite 3 intentos
+		Scanner sc = new Scanner(System.in);
+		String password = "1234";
+		int intentos = 0;
+		boolean adivina = false;
+		while(!adivina && intentos<3) { 
+			System.out.println("Introduzca la contraseña tienes " + (3-intentos) + " intento"+ (intentos!=2?"s":""));
+			String respuesta = sc.nextLine();
+			if(respuesta.equals(password)) {
+				adivina = true;
+			}else{
+				System.out.println("Fallaste");	
+				}
+			intentos++;// la ultima linea de un bucle debe ser siempre la que corte el bucle, aquella que se modifica 1 o varias veces hasta que el bucle se acabe
+			}
+		
+		
+		if(adivina){ //esto es igual a if(adivina==true)
+			}
+		System.out.println(adivina?"enhorabuena saliste del videojuego":"Gastaste todos tus intentos");
+		
+		sc.close();	
+		}
+	
+		
+	
+	
 }
 
