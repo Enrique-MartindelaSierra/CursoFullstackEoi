@@ -182,4 +182,25 @@ public class MiArrays {
 		}
 
 	}
+
+	public static void clasesEnvolventes() {
+		// int -> Integer
+		Integer numero;
+
+		// double -> Double
+		Double decimal;
+
+		// float -> Float
+		Float decimal2;
+
+		// char -> Character
+		Character letra;
+
+		// boolean -> Boolean
+		Boolean booleano;
+		
+		//String ya es una clase, no tiene Wrapper
+		String cadena;
+
+	}
 }
