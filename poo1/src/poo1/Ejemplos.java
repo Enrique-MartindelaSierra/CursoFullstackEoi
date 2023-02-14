@@ -62,7 +62,7 @@ public class Ejemplos {
 
 	}
 
-	public static void ejemploListaJugadores(){
+	public static void ejemploListaJugadores() {
 		// creo una lista para almacenar jugadores
 		List<Jugador> jugadores = new ArrayList<Jugador>();
 
@@ -87,17 +87,59 @@ public class Ejemplos {
 		jugadores.forEach(e -> System.out.println(e));
 		// filtra e imprime
 		System.out.println("jugadores que ganan mas de 2500");
-		jugadores.stream()
-			.filter(e -> e.getSueldo() > 2500)
-			.forEach(e -> System.out.println(e));
+		jugadores.stream().filter(e -> e.getSueldo() > 2500).forEach(e -> System.out.println(e));
 
+	}
+
+	public static void ejemplosHerencias() {
+//		Animal animal = new Animal("mi animal", 1); //esto ya no funciona por que hemos declarado Animal como abstracto
+		Ave pajaro = new Ave(true);
+		//podemos declarar un nuevo Ave como Animal ya que es una clase que hereda del abstracto
+		Animal gallina = new Ave("Animal desconocido", 1, false);
+//		pajaro.comer();
+		pajaro.ponerHuevos();
+
+		System.out.println("el pajaro se llama: " + pajaro.getNombre());
+
+		Mamifero leon = new Mamifero("Leon", 210, true);
+		leon.comer();
+
+		System.out.println(pajaro);
+		System.out.println(leon);
+		
+		Mamifero gato = new Mamifero("Animal desconocido", 1, true);
+		
+		System.out.println(pajaro.equals(gallina));
+		//aunque se llaman igual, pesan lo mismo y son animales, nos dice que no son iguales por que no son la misma clase
+		System.out.println(pajaro.equals(gato));
+	
+		gallina.setNombre("Gallina");
+		System.out.println(pajaro.pollitos(pajaro.getNombre()));
+		
+		
+		List<Animal> animales= new ArrayList<Animal>();
+		animales.add(pajaro);
+		animales.add(gallina);
+		animales.add(leon);
+		animales.add(gato);
+		animales.forEach(e->System.out.println(e)); //aqui hay polimorfismo
+		animales.forEach(e->System.out.println(e.rugido())); //aqui hay polimorfismo
+		
+		System.out.println("Ejemplo instanceof");
+		for(Animal animal: animales){
+			if(animal instanceof Ave) {
+			System.out.println("El numero de pollitos es: "+ ((Ave)animal).pollitos(animal.getNombre()));
+			}else if(animal instanceof Mamifero) {
+				System.out.println(animal.rugido());
+			}
+		}
 	}
 
 	public static void main(String[] args) {
 //		ejemplosCoches();
 //		ejemplosJugadores();
-		ejemploListaJugadores();
-
+//		ejemploListaJugadores();
+		ejemplosHerencias();
 	}
 
 }

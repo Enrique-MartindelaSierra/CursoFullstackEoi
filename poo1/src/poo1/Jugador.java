@@ -2,7 +2,7 @@ package poo1;
 
 import java.util.Objects;
 
-public class Jugador {
+public class Jugador implements IHablador {
 	private String nombre;
 	private int edad;
 	private double sueldo;
@@ -91,6 +91,20 @@ public class Jugador {
 		Jugador other = (Jugador) obj;
 		return edad == other.edad && Objects.equals(nombre, other.nombre)
 				&& Double.doubleToLongBits(sueldo) == Double.doubleToLongBits(other.sueldo);
+	}
+
+
+	@Override
+	public void hablar() {
+		System.out.println("hola");
+		
+	}
+
+
+	@Override
+	public void gritar() {
+		System.out.println("HOLA");
+		
 	}
 
 
