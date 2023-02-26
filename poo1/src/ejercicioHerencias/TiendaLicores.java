@@ -1,6 +1,7 @@
 package ejercicioHerencias;
 
-public class TiendaLicores extends Tienda {
+//si pones el modificador final a una clase, no se podrá heredar de ella
+public final class TiendaLicores extends Tienda {
 
 	public TiendaLicores() {
 		
