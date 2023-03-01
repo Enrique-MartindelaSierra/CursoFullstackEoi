@@ -125,7 +125,7 @@ public class App {
 									}	
 									
 									
-								}
+								} 
 							}		
 						
 						} catch (FileNotFoundException e) {
@@ -144,7 +144,13 @@ public class App {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
+			
+			if (caixa.isEmpty()) {
+					caixa.add(error);
+					sabadell.add(error);
+					santander.add(error);
+				}
+			
 			if(caixa.get(0).getNombre().equals("error")) {
 				System.out.println("Cuenta con DNI: "+ dnicif + " no existente");
 			}
