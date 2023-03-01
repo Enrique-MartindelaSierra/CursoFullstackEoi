@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,13 +13,17 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.enrique.ficherosFechasColecciones.entidades.Cuenta;
+import com.enrique.ficherosFechasColecciones.entidades.Oferta;
 
 /**
  * Somos una entidad financiera que trabaja con varios bancos y que quiere
@@ -129,14 +134,8 @@ public class App {
 							}		
 						
 						} catch (FileNotFoundException e) {
-
-							caixa.add(error);
-							sabadell.add(error);
-							santander.add(error);
-							
 							e.printStackTrace();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -224,8 +223,43 @@ public class App {
 
 	
 	public static void FiltroFicheroProducto(Cuenta elegida)   {
+		List<Oferta> ofertas = deFicheroAOferta(productos);
+		List<Oferta> tarjetas = new ArrayList<Oferta>();
+		String tarjeta = "0";
 		if(elegida.getNombre()!="error") {
-			try (BufferedReader lector = new BufferedReader(new FileReader(productos.toFile()))) {
+			int edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.now()).getYears();
+			//if(edad>=edadMinima && edad<=edadMaxima && elegida.getSaldo()>=saldoMinimo && elegida.getSaldo()<=saldoMaximo)
+			for (Oferta oferta : ofertas) {
+					if(oferta.getEdadMinima()<=edad
+					&& oferta.getEdadMaxima()>=edad
+					&& oferta.getSaldoMinimo()<=elegida.getSaldo()
+					&& oferta.getSaldoMaximo()>=elegida.getSaldo()) {
+						tarjetas.add(oferta);
+					}
+				}
+			
+			Optional<Oferta>  oferta = tarjetas.stream().max(Comparator.comparing(Oferta::getSaldoMinimo));
+			if(oferta.isPresent()) {
+				tarjeta = oferta.get().getTarjeta();
+			}
+		}
+			
+			
+			if(tarjeta!="0") {
+				if(elegida.getPais().equals("ES")) {
+					System.out.println("Esta es la tarjeta que le ofrecemos: " + tarjeta);
+				}else if(elegida.getPais().equals("EX")) {
+					System.out.println("This is the card we offer you: " + tarjeta);
+				}
+			}else {				
+				if(elegida.getPais().equals("ES")) {
+					System.out.println("Lo sentimos, no podemos ofrecerle ningún producto");
+				}else if(elegida.getPais().equals("EX")) {
+					System.out.println("Sorry, we can't offer you any products");
+				}
+	
+			}
+			/*try (BufferedReader lector = new BufferedReader(new FileReader(productos.toFile()))) {
 			String linea;
 			String oferta= "0";
 			while ((linea = lector.readLine()) != null) {
@@ -238,14 +272,16 @@ public class App {
 						double saldoMinimo = Double.parseDouble(matcher.group("saldoMinimo"));
 						double saldoMaximo = Double.parseDouble(matcher.group("saldoMaximo"));
 						String producto = (matcher.group("producto"));
-
-						int edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.now()).getYears();
-//						if(elegida.getPais()=="ES") {
-//							edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.now()).getYears();
-//						}else {
-//							edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("MM/dd/yyyy")), LocalDate.now()).getYears();							
-//						} //esto resulta que no hace falta por que el formato de la fecha que nos dan es el mismo siempre
+						
+						
+						
+						if(elegida.getPais()=="ES") {
+							edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.now()).getYears();
+						}else {
+							edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("MM/dd/yyyy")), LocalDate.now()).getYears();							
+						} //esto resulta que no hace falta por que el formato de la fecha que nos dan es el mismo siempre
 						if(edad>=edadMinima && edad<=edadMaxima && elegida.getSaldo()>=saldoMinimo && elegida.getSaldo()<=saldoMaximo) {
+							
 							oferta = producto;
 						}
 						
@@ -257,17 +293,48 @@ public class App {
 			
 			//fuera del while
 			if(oferta!="0") {
-			System.out.println("Esta es la tarjeta que le ofrecemos: " + oferta);
+				if(elegida.getPais().equals("ES")) {
+					System.out.println("Esta es la tarjeta que le ofrecemos: " + oferta);
+				}else if(elegida.getPais().equals("EX")) {
+					System.out.println("This is the card we offer you: " + oferta);
+				}
 			}else {				
 						System.out.println("Lo sentimos, no podemos ofrecerle ningún producto");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		}
+		}*/
+		
 	}
 	
+	
+	
+	public static List<String> devolverLineasJava8(Path ruta){
+		try {
+			List<String> lineas = Files.readAllLines(ruta,Charset.forName("UTF-8"));
+			return lineas;
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("No se puede acceder al fichero. Error en devolverLineasJava8");
+			return null;
+		}
+	}
+	public static List<Oferta> deFicheroAOferta(Path archivo) {
+		List<Oferta> ofertas = new ArrayList<Oferta>();
+		List<String> lineas = devolverLineasJava8(archivo);
+		lineas.forEach(e->{
+			Oferta oferta = new Oferta();
+			String[] parte = e.split(";");
+			oferta.setEdadMinima(Integer.parseInt(parte[0]));   
+			oferta.setEdadMaxima(Integer.parseInt(parte[1]));   
+			oferta.setSaldoMinimo(Integer.parseInt(parte[2]));   
+			oferta.setSaldoMaximo(Integer.parseInt(parte[3]));   
+			oferta.setTarjeta(parte[4]);   
+			ofertas.add(oferta);
+		});
+		return ofertas;
+	}
 	
 	// mostrar opcion a la que puede acceder con filtros
 	
