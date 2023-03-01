@@ -71,7 +71,7 @@ import com.enrique.ficherosFechasColecciones.entidades.Cuenta;
  *
  */
 public class App {
-
+	static Scanner sc= new Scanner(System.in);
 	static Path ficheros = Paths.get("ficheros");
 	static Path productos = Paths.get("productosofertados.txt");
 	static List<Cuenta> caixa = new ArrayList<>();
@@ -79,13 +79,13 @@ public class App {
 	static List<Cuenta> santander = new ArrayList<>();
 
 
-	public String pedirDNI_CIF() {
-		Scanner sc = new Scanner(System.in);
+	public static String pedirDNI_CIF() {
+//		Scanner sc = new Scanner(System.in);
 		System.out.println("Introduzca DNI o CIF: ");
 		String dni = sc.nextLine();
 		// refinar
 
-		sc.close();
+//		sc.close();
 		return dni;
 	}
 
@@ -93,6 +93,7 @@ public class App {
 	public static Cuenta leerFicherosEnCarpetaTodasLasLineasAClaseCuenta(String dnicif) {
 
 		Cuenta elegida = new Cuenta();
+		Cuenta error = new Cuenta("error","error","error","error",0);
 		if (Files.isDirectory(ficheros)) {
 			try {
 				Files.list(ficheros).filter(Files::isRegularFile).forEach(archivo -> {
@@ -113,19 +114,26 @@ public class App {
 									if (dni.equals(dnicif)) {
 
 										Cuenta cuenta = new Cuenta(dni, nombre, fecha, pais, saldo);
-
+										
 										if (archivo.getFileName().toString().equals("caixa.txt")) {
 											caixa.add(cuenta);
 										} else if (archivo.getFileName().toString().equals("sabadell.txt")) {
 											sabadell.add(cuenta);
 										} else if (archivo.getFileName().toString().equals("santander.txt")) {
 											santander.add(cuenta);
-										}
-									}
+										} 
+									}	
+									
+									
 								}
-							}
+							}		
+						
 						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
+
+							caixa.add(error);
+							sabadell.add(error);
+							santander.add(error);
+							
 							e.printStackTrace();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -137,6 +145,9 @@ public class App {
 				e.printStackTrace();
 			}
 		
+			if(caixa.get(0).getNombre().equals("error")) {
+				System.out.println("Cuenta con DNI: "+ dnicif + " no existente");
+			}
 		
 	
 		/*dni*/elegida.setDni(dnicif);
@@ -146,15 +157,15 @@ public class App {
 					elegida.setNombre(caixa.get(0).getNombre());
 				}
 		LocalDateTime fechaHora = LocalDateTime.now();
-		/*pais*/if(caixa.get(0).getPais().equals("ES")&&
-				sabadell.get(0).getPais().equals("ES")&&
+		/*pais*/if(caixa.get(0).getPais().equals("ES")||
+				sabadell.get(0).getPais().equals("ES")||
 				santander.get(0).getPais().equals("ES"))
 				{
-					elegida.setPais(caixa.get(0).getPais());
+					elegida.setPais("ES");
 					System.out.println(elegida.getNombre()+"\nBienvenido a nuestro sistema de gestion de cuentas");
 			        System.out.println(fechaHora.format(DateTimeFormatter.ofPattern("HH:mm EEEE dd/MM/yyyy")));
 
-				}else {
+				}else if(caixa.get(0).getNombre()!="error") {
 					elegida.setPais("EX");//extranjera
 					System.out.println(elegida.getNombre()+"\nWelcome to our account management system");	
 					System.out.println(fechaHora.format(DateTimeFormatter.ofPattern("HH:mm EEEE MM/dd/yyyy", new Locale("en", "US"))));
@@ -165,7 +176,7 @@ public class App {
 		{
 			elegida.setFecha(caixa.get(0).getFecha());
 		}else {
-			Scanner sc = new Scanner(System.in);
+//			Scanner sc = new Scanner(System.in);
 			if(elegida.getPais().equals("ES")) {
 				System.out.println("Indique que fecha de nacimiento es correcta: "+
 					"1) "+caixa.get(0).getFecha()+" "+
@@ -191,7 +202,7 @@ public class App {
 						"3) "+santander.get(0).getFecha()+"\n");
 				}
 			}while(opcion<1 || opcion>3);
-			sc.close();
+//			sc.close();
 		}
 		
 		/*saldo*/elegida.setSaldo(caixa.get(0).getSaldo()+sabadell.get(0).getSaldo()+santander.get(0).getSaldo());
@@ -206,46 +217,70 @@ public class App {
 	}
 
 	
-	public static void leerFicheroJava()   {
-		try (BufferedReader lector = new BufferedReader(new FileReader(productos.toFile()))) {
+	public static void FiltroFicheroProducto(Cuenta elegida)   {
+		if(elegida.getNombre()!="error") {
+			try (BufferedReader lector = new BufferedReader(new FileReader(productos.toFile()))) {
 			String linea;
+			String oferta= "0";
 			while ((linea = lector.readLine()) != null) {
 				Pattern patron = Pattern.compile(
 						"^(?<edadMinima>[^;]+);(?<edadMaxima>[^;]+);(?<saldoMinimo>[^;]+);(?<saldoMaximo>[^;]+);(?<producto>[^;]+)$");
 				Matcher matcher = patron.matcher(linea);
 				if (matcher.matches()) {
-						String edadMinima = matcher.group("edadMinima");
-						String edadMaxima = matcher.group("edadMaxima");
-						String saldoMinimo = matcher.group("saldoMinimo");
-						String saldoMaximo = matcher.group("saldoMaximo");
-						double producto = Double.parseDouble(matcher.group("producto"));
+						int edadMinima =Integer.parseInt(matcher.group("edadMinima"));
+						int edadMaxima =Integer.parseInt(matcher.group("edadMaxima"));
+						double saldoMinimo = Double.parseDouble(matcher.group("saldoMinimo"));
+						double saldoMaximo = Double.parseDouble(matcher.group("saldoMaximo"));
+						String producto = (matcher.group("producto"));
 
+						int edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.now()).getYears();
+//						if(elegida.getPais()=="ES") {
+//							edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.now()).getYears();
+//						}else {
+//							edad = Period.between(LocalDate.parse(elegida.getFecha(), DateTimeFormatter.ofPattern("MM/dd/yyyy")), LocalDate.now()).getYears();							
+//						} //esto resulta que no hace falta por que el formato de la fecha que nos dan es el mismo siempre
+						if(edad>=edadMinima && edad<=edadMaxima && elegida.getSaldo()>=saldoMinimo && elegida.getSaldo()<=saldoMaximo) {
+							oferta = producto;
+						}
+						
+						
+						
+						
 				}
+			}
+			
+			//fuera del while
+			if(oferta!="0") {
+			System.out.println("Esta es la tarjeta que le ofrecemos: " + oferta);
+			}else {				
+						System.out.println("Lo sentimos, no podemos ofrecerle ningún producto");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}
 	}
 	
 	
 	// mostrar opcion a la que puede acceder con filtros
-
-	public static void main(String[] args) {
 	
-		//System.out.println(leerFicherosEnCarpetaTodasLasLineasAClaseCuenta("111"));
+	
+	// para el scanner probar libreria de metodos
+	
+	// si no se ofrece producto enviar mensaje 
+	// si no hay cuenta con dni enviar mensaje el problema 
+
+	
+	// estructurar todo MEJOR :)
+	public static void main(String[] args) {
 		
-		// Obtener la fecha actual
-		LocalDate fechaActual = LocalDate.now();
-
-		// Crear la fecha de nacimiento
-		LocalDate fechaNacimiento = LocalDate.of(1990, 5, 12);
-
-		// Calcular la diferencia en años entre la fecha actual y la fecha de nacimiento
-		int edad = Period.between(fechaNacimiento, fechaActual).getYears();
-
-		// Imprimir la edad
-		System.out.println("La edad actual es: " + edad);
+		String dni = pedirDNI_CIF();
+		Cuenta cliente = leerFicherosEnCarpetaTodasLasLineasAClaseCuenta(dni);
+		FiltroFicheroProducto(cliente);
+		
+		
 		    
+		sc.close();
 	}
 }
